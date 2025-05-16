@@ -8,12 +8,13 @@ import numpy as np
 from fastapi.responses import JSONResponse
 from datetime import datetime
 from fastapi.encoders import jsonable_encoder
+import uvicorn
 app = FastAPI()
 
 # Permitir solicitudes desde Streamlit
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # ⚠️ Restringe esto a tu dominio en producción
+    allow_origins=["http://10.10.21.53:8501"],  # ⚠️ Restringe esto a tu dominio en producción
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -181,3 +182,6 @@ and CONVERT(DATETIME, CONVERT(DATE, OOHA.CREATION_DATE)) > '01-01-2022'
 
         return JSONResponse(content=data)
             
+if __name__ == "__main__":
+    uvicorn.run("test_api_backend:app", host="0.0.0.0", port=8000, reload=False, log_level="debug",
+                workers=1)
